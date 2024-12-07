@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>CSRF-Protected Page</title>
+</head>
+<body>
+    <h1>CSRF Protected Form</h1>
+    <form action="/submit" method="POST">
+        {{ form.hidden_tag() }}
+        <label for="name">Name:</label>
+        {{ form.name }}
+        {{ form.submit }}
+    </form>
+    <a href="/no_csrf">Form Without CSRF Protection</a>
+</body>
+</html>

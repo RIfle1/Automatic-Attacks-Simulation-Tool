@@ -4,8 +4,8 @@ from kivy.uix.label import Label
 from kivy.uix.tabbedpanel import TabbedPanel, TabbedPanelItem
 from kivy.uix.textinput import TextInput
 
-from gui.dictionary_attacks.console_view import ConsoleView
-from gui.dictionary_attacks.dictionary_attacks_view import DictionaryAttackView
+from gui.credential_stuffing.console_view import ConsoleView
+from gui.credential_stuffing.credential_stuffing_view import CredentialStuffingView
 from gui.global_variables import default_font_size, default_tab_width
 
 
@@ -43,8 +43,8 @@ class TabsView(TabbedPanel):
         self.do_default_tab = False
         self.tab_width = default_tab_width
 
-        tab1 = TabbedPanelItem(text="Dictionary Attack")
-        tab1.add_widget(DictionaryAttackView(console_view))
+        tab1 = TabbedPanelItem(text="Credential Stuffing")
+        tab1.add_widget(CredentialStuffingView(console_view))
         self.add_widget(tab1)
 
         tab2 = TabbedPanelItem(text="Tab 2")

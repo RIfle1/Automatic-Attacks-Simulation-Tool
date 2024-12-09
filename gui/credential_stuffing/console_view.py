@@ -3,7 +3,7 @@ from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.textinput import TextInput
 
-from gui.dictionary_attacks.custom_layout import CustomHeightLayout
+from gui.credential_stuffing.custom_layout import CustomHeightLayout
 from gui.global_variables import default_font_size, default_button_height
 
 

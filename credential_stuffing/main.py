@@ -83,5 +83,4 @@ def credential_stuffing(username_var, password_var, login_success_var, url, head
             if send_request(username_var, credentials.username, password_var, credentials.password,
                             login_success_var, url, headers, console_view):
                 return True
-
     return False

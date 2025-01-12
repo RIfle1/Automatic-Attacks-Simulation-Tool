@@ -9,6 +9,8 @@ from gui.csrf_grab_token.crsf_token_view import CSRFTokenView
 from gui.global_variables import default_tab_width
 from gui.least_privilege.least_privilege_view import LeastPrivilegeTokenView
 from gui.dos_attack.dos_attack_view import DoSAttackView
+from gui.sql_injection.sql_injection_view import SqlInjectionView
+
 
 class Gui(App):
     def build(self):
@@ -59,10 +61,18 @@ class TabsView(TabbedPanel):
         tab3.add_widget(LeastPrivilegeTokenView(console_view))
         self.add_widget(tab3)
 
-        # Tab 4: Denial of Service
-        tab4 = TabbedPanelItem(text="DoS Attack")
-        tab4.add_widget(DoSAttackView(console_view))
+
+        # Tab 5: Denial of Service
+        tab4 = TabbedPanelItem(text="SQL")
+        tab4.add_widget(SqlInjectionView(console_view))
         self.add_widget(tab4)
+        # Tab 4: Denial of Service
+        tab5 = TabbedPanelItem(text="DoS Attack")
+        tab5.add_widget(DoSAttackView(console_view))
+        self.add_widget(tab5)
+
+
+
 
         self.set_def_tab(tab1)
 

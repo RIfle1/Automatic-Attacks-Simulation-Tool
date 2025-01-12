@@ -58,18 +58,10 @@ class SqlInjectionView(BoxLayout):
         # Add a spacer between buttons
         button_layout.add_widget(Widget(size_hint_y=None, height=default_padding_1))
 
-        # Stop SQL Injection Button
-        stop_button_layout = CustomHeightLayout(height=default_button_height)
-        self.stop_button = Button(text="Stop Attack")
-        self.stop_button.bind(on_press=self.stop_attack)
-        stop_button_layout.add_widget(self.stop_button)
-        button_layout.add_widget(stop_button_layout)
-
         # Add the button layout to the main view
         self.add_widget(button_layout)
 
     def start_server(self, instance):
-        """Start the Flask server as a subprocess."""
         if self.server_process is None or self.server_process.poll() is not None:
             self.console_view.add_text_schedule("Starting Flask Test Server...")
             self.server_process = subprocess.Popen(
@@ -94,11 +86,9 @@ class SqlInjectionView(BoxLayout):
             self.console_view.add_text_schedule("[INFO] No server is currently running.")
 
     def start_sql_injection_thread(self, instance):
-        """Start SQL Injection in a separate thread."""
         threading.Thread(target=self.start_sql_injection, daemon=True).start()
 
     def start_sql_injection(self):
-        """Run the SQL Injection test."""
         url = self.url_view.get_url().strip()
 
         # Validate the URL
@@ -121,8 +111,3 @@ class SqlInjectionView(BoxLayout):
 
         # Run the SQL Injection test
         sql_injection_test(url, parameters, payloads, self.console_view)
-
-    def stop_attack(self, instance):
-        """Stop the attack."""
-        # Use the existing logic for stopping the attack.
-        self.console_view.add_text_schedule("SQL Injection Attack stopped by user.")

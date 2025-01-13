@@ -4,6 +4,7 @@ from kivy.uix.tabbedpanel import TabbedPanel, TabbedPanelItem
 from gui.dictionary_attacks.jwt_attack_view import JwtAttackView
 from gui.dictionary_attacks.console_view import ConsoleView
 from gui.dictionary_attacks.dictionary_attacks_view import DictionaryAttackView
+from gui.dictionary_attacks.jwt_pentest_view import JwtPentestView
 from gui.global_variables import default_font_size, default_tab_width
 
 
@@ -48,6 +49,10 @@ class TabsView(TabbedPanel):
         tab2 = TabbedPanelItem(text="JWT Attack")
         tab2.add_widget(JwtAttackView(console_view))
         self.add_widget(tab2)
+
+        tab3 = TabbedPanelItem(text="JWT Pentest")
+        tab3.add_widget(JwtPentestView(console_view))
+        self.add_widget(tab3)
 
         self.set_def_tab(tab1)
 

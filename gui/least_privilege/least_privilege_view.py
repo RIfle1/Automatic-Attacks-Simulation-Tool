@@ -7,7 +7,7 @@ from kivy.uix.widget import Widget
 from attacks.credential_stuffing.global_variables import url_global
 from attacks.least_privilege.leastPriviliege import test_least_privilege
 from gui.global_variables import default_button_height, default_padding_1
-from gui.least_privilege.SitemapUrlView import SiteMapUrlView
+from gui.least_privilege.sitemap_url_view import SiteMapUrlView
 from gui.least_privilege.stopped_manager import start_process, is_stopped, stop_process
 from gui.utils.console_view import ConsoleView
 from gui.utils.custom_layout import CustomHeightLayout

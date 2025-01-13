@@ -12,7 +12,7 @@ from gui.credential_stuffing.success_manager import get_finishes_length, \
     get_successful_credentials, get_failed_credentials, clear_all, get_failed_requests_length
 from gui.credential_stuffing.variables_view import VariablesView
 from gui.global_variables import default_button_height
-from gui.utils.TextInputWidget import TextInputWidget
+from gui.utils.text_input_widget import TextInputWidget
 from gui.utils.console_view import ConsoleView
 from gui.utils.custom_layout import CustomHeightLayout
 from gui.utils.keywords_view import KeywordsView

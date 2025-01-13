@@ -4,9 +4,8 @@ import time
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
 
-from credential_stuffing.global_variables import headers_global, USERNAME_KEY, PASSWORD_KEY, LOGIN_SUCCESS_KEY, \
-    url_global, credential_limit_global
-from credential_stuffing.main import credential_stuffing
+from attacks.credential_stuffing.global_variables import *
+from attacks.credential_stuffing.main import credential_stuffing
 from gui.credential_stuffing.credentials_view import CredentialsView
 from gui.credential_stuffing.process_manager import start_process, stop_process, is_stopped
 from gui.credential_stuffing.success_manager import get_finishes_length, \

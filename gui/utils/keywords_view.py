@@ -2,7 +2,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 
-from credential_stuffing.main import keywords
+from attacks.credential_stuffing.main import keywords
 from gui.global_variables import default_font_size, title_font_size
 from gui.utils.custom_layout import CustomDynamicLayout, CustomHeightLayout
 

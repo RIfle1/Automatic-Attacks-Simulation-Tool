@@ -5,7 +5,7 @@ from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.textinput import TextInput
 
-from credential_stuffing.main import Credential
+from gui.credential_stuffing.credential import Credential
 from gui.global_variables import default_font_size, default_button_height, title_font_size
 from gui.utils.custom_layout import CustomHeightLayout, CustomDynamicLayout
 

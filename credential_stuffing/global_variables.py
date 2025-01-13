@@ -1,4 +1,8 @@
 url_global = "http://localhost:7000/api/public/login"
+# url_global = "https://fitbud.ldelatullaye.fr/auth/login"
+
+credential_limit_global = 10
+
 headers_global = {}
 
 username_variable = "email"

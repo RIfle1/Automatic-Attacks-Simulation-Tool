@@ -3,7 +3,7 @@ from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 
 from credential_stuffing.main import keywords
-from gui.credential_stuffing.custom_layout import CustomDynamicLayout, CustomHeightLayout
+from gui.custom_layout import CustomHeightLayout, CustomDynamicLayout
 from gui.global_variables import default_font_size, title_font_size
 
 

@@ -1,8 +1,8 @@
 import requests
 
 from global_functions import send_request
-from gui.credential_stuffing.console_view import ConsoleView
-from gui.credential_stuffing.stopped_manager import is_stopped
+from gui.console_view import ConsoleView
+from gui.credential_stuffing.process_manager import is_stopped
 
 
 def dictionary_attack(username_var, username_value, password_var,

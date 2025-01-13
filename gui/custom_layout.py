@@ -1,6 +1,6 @@
 from kivy.uix.boxlayout import BoxLayout
 
-from gui.global_variables import default_padding_1, default_button_height
+from gui.global_variables import default_button_height
 
 
 class CustomDynamicLayout(BoxLayout):

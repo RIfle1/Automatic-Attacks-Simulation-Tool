@@ -5,8 +5,8 @@ from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.textinput import TextInput
 
-from credential_stuffing.main import Credentials
-from gui.credential_stuffing.custom_layout import CustomDynamicLayout, CustomHeightLayout
+from credential_stuffing.main import Credential
+from gui.custom_layout import CustomHeightLayout, CustomDynamicLayout
 from gui.global_variables import default_font_size, default_button_height, title_font_size
 
 
@@ -27,7 +27,7 @@ class CredentialsView(GridLayout):
         self.credentials_scroll_view = CredentialsScrollView()
 
         add_credential_button_layout = CustomHeightLayout(height=default_button_height)
-        self.add_credential_button = Button(text="Add Credentials")
+        self.add_credential_button = Button(text="Add Credential")
         self.add_credential_button.bind(on_press=self.on_add_credential_click)
 
         add_credential_button_layout.add_widget(self.add_credential_button)
@@ -99,4 +99,4 @@ class CredentialsWidget(GridLayout):
         self.credentials_scroll_view.remove_credential(self)
 
     def get_credentials(self):
-        return Credentials(self.username_input.text, self.password_input.text)
+        return Credential(self.username_input.text, self.password_input.text)

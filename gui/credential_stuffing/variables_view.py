@@ -6,7 +6,7 @@ from kivy.uix.textinput import TextInput
 
 from credential_stuffing.global_variables import USERNAME_KEY, PASSWORD_KEY, LOGIN_SUCCESS_KEY, username_variable, \
     password_variable, login_success_variable
-from gui.credential_stuffing.custom_layout import CustomDynamicLayout, CustomHeightLayout
+from gui.custom_layout import CustomHeightLayout, CustomDynamicLayout
 from gui.global_variables import default_font_size, title_font_size
 
 

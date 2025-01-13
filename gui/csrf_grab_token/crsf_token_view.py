@@ -4,16 +4,17 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.widget import Widget
 
+from attacks.credential_stuffing.global_variables import url_global
 from attacks.csrf_grab.csrfTest import test_csrf_protection
-from gui.csrf_grab_token.UrlView import UrlView
-from gui.csrf_grab_token.console_view import ConsoleView
-from gui.csrf_grab_token.custom_layout import CustomHeightLayout
 from gui.csrf_grab_token.stopped_manager import start_process, is_stopped, stop_process
 from gui.global_variables import default_button_height, default_padding_1
+from gui.utils.console_view import ConsoleView
+from gui.utils.custom_layout import CustomHeightLayout
+from gui.utils.text_input_widget import TextInputWidget
 
 
 class CSRFTokenView(BoxLayout):
-    def __init__(self,console_view: ConsoleView, **kwargs):
+    def __init__(self, console_view: ConsoleView, **kwargs):
         self.console_view = console_view
         super(CSRFTokenView, self).__init__(**kwargs)
         self.orientation = 'vertical'
@@ -21,7 +22,7 @@ class CSRFTokenView(BoxLayout):
         self.spacing = 10
 
         # Add URL view at the top
-        self.url_view = UrlView()
+        self.url_view = TextInputWidget(url_global, "URL", "URL of the website you want")
         self.add_widget(self.url_view)
 
         # Add a spacer to push buttons to the bottom
@@ -62,15 +63,16 @@ class CSRFTokenView(BoxLayout):
     def stop_attack(self, instance):
         stop_process()
 
+
 def start_csrf_grab(self: CSRFTokenView):
     url = self.url_view.get_url()
 
     self.console_view.add_text_schedule(f"Starting CSRF Token Grabbing Attack on {url}")
 
-    success=False
+    success = False
     while not is_stopped():
 
-        success=test_csrf_protection(url,console_view=self.console_view)
+        success = test_csrf_protection(url, console_view=self.console_view)
 
         if success or is_stopped():
             break

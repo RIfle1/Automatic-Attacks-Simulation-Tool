@@ -4,18 +4,18 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.widget import Widget
 
+from attacks.credential_stuffing.global_variables import url_global
 from attacks.least_privilege.leastPriviliege import test_least_privilege
-from gui.least_privilege.SitemapUrlView import SiteMapUrlView
-from gui.least_privilege.UrlView import UrlView
-
-from gui.least_privilege.console_view import ConsoleView
-from gui.least_privilege.custom_layout import CustomHeightLayout
-from gui.least_privilege.stopped_manager import start_process, is_stopped, stop_process
 from gui.global_variables import default_button_height, default_padding_1
+from gui.least_privilege.SitemapUrlView import SiteMapUrlView
+from gui.least_privilege.stopped_manager import start_process, is_stopped, stop_process
+from gui.utils.console_view import ConsoleView
+from gui.utils.custom_layout import CustomHeightLayout
+from gui.utils.text_input_widget import TextInputWidget
 
 
 class LeastPrivilegeTokenView(BoxLayout):
-    def __init__(self,console_view: ConsoleView, **kwargs):
+    def __init__(self, console_view: ConsoleView, **kwargs):
         self.console_view = console_view
         super(LeastPrivilegeTokenView, self).__init__(**kwargs)
         self.orientation = 'vertical'
@@ -23,7 +23,7 @@ class LeastPrivilegeTokenView(BoxLayout):
         self.spacing = 10
 
         # Add URL view at the top
-        self.url_view = UrlView()
+        self.url_view = TextInputWidget(url_global, "URL", "URL of the website you want")
         self.add_widget(self.url_view)
 
         self.site_map_url_view = SiteMapUrlView()
@@ -67,14 +67,15 @@ class LeastPrivilegeTokenView(BoxLayout):
     def stop_attack(self, instance):
         stop_process()
 
+
 def start_csrf_grab(self: LeastPrivilegeTokenView):
     url = self.url_view.get_url()
     sitemap_url = self.site_map_url_view.get_url()
     self.console_view.add_text_schedule(f"Starting Least Privilege Attack on {url}")
 
-    success=False
+    success = False
     while not is_stopped():
-        success=test_least_privilege(url,sitemap_url, self.console_view)
+        success = test_least_privilege(url, sitemap_url, self.console_view)
         if success or is_stopped():
             break
 

@@ -3,8 +3,8 @@ from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 
 from attacks.credential_stuffing.global_variables import url_global
-from gui.credential_stuffing.custom_layout import CustomHeightLayout
 from gui.global_variables import default_font_size, title_font_size
+from gui.utils.custom_layout import CustomHeightLayout
 
 
 class SiteMapUrlView(GridLayout):

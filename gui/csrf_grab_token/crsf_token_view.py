@@ -54,7 +54,7 @@ class CSRFTokenView(BoxLayout):
 
     def get_url(self):
         """Fetch the URL from UrlView."""
-        return self.url_view.get_url()
+        return self.url_view.get_text()
 
     def start_credential_stuffing_attack_thread(self, instance):
         start_process()
@@ -65,7 +65,7 @@ class CSRFTokenView(BoxLayout):
 
 
 def start_csrf_grab(self: CSRFTokenView):
-    url = self.url_view.get_url()
+    url = self.url_view.get_text()
 
     self.console_view.add_text_schedule(f"Starting CSRF Token Grabbing Attack on {url}")
 

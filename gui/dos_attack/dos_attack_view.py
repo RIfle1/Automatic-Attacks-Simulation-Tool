@@ -50,15 +50,12 @@ class DoSAttackView(BoxLayout):
         # Add the button layout to the main view
         self.add_widget(button_layout)
 
-    def get_url(self):
-        return self.url_view.get_url()
-
     def start_attack_thread(self, instance):
         start_process()
         threading.Thread(target=self.start_attack).start()
 
     def start_attack(self):
-        url = self.get_url()
+        url = self.url_view.get_text()
         self.console_view.add_text_schedule(f"Starting DoS Attack on {url}. Press 'Stop Attack' to terminate.")
         perform_dos(url, self.console_view)
 

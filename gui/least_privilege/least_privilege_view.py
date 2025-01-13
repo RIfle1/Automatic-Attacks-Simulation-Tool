@@ -58,7 +58,7 @@ class LeastPrivilegeTokenView(BoxLayout):
 
     def get_url(self):
         """Fetch the URL from UrlView."""
-        return self.url_view.get_url()
+        return self.url_view.get_text()
 
     def start_credential_stuffing_attack_thread(self, instance):
         start_process()
@@ -69,7 +69,7 @@ class LeastPrivilegeTokenView(BoxLayout):
 
 
 def start_csrf_grab(self: LeastPrivilegeTokenView):
-    url = self.url_view.get_url()
+    url = self.url_view.get_text()
     sitemap_url = self.site_map_url_view.get_url()
     self.console_view.add_text_schedule(f"Starting Least Privilege Attack on {url}")
 

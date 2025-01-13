@@ -89,7 +89,7 @@ class SqlInjectionView(BoxLayout):
         threading.Thread(target=self.start_sql_injection, daemon=True).start()
 
     def start_sql_injection(self):
-        url = self.url_view.get_url().strip()
+        url = self.url_view.get_text().strip()
 
         # Validate the URL
         if not url:

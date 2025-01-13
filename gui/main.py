@@ -77,6 +77,15 @@ class TabsView(TabbedPanel):
 
         self.set_def_tab(credential_stuffing_tab)
 
+        # Tab 5: Denial of Service
+        tab4 = TabbedPanelItem(text="SQL")
+        tab4.add_widget(SqlInjectionView(console_view))
+        self.add_widget(tab4)
+        # Tab 4: Denial of Service
+        tab5 = TabbedPanelItem(text="DoS Attack")
+        tab5.add_widget(DoSAttackView(console_view))
+        self.add_widget(tab5)
+
 
 if __name__ == "__main__":
     Gui().run()

@@ -46,13 +46,13 @@ class TabsView(TabbedPanel):
         tab1.add_widget(DictionaryAttackView(console_view))
         self.add_widget(tab1)
 
-        tab2 = TabbedPanelItem(text="JWT Attack")
-        tab2.add_widget(JwtAttackView(console_view))
-        self.add_widget(tab2)
+        jwt_attack_tab = TabbedPanelItem(text="JWT Attack")
+        jwt_attack_tab.add_widget(JwtAttackView(console_view))
+        self.add_widget(jwt_attack_tab)
 
-        tab3 = TabbedPanelItem(text="JWT Pentest")
-        tab3.add_widget(JwtPentestView(console_view))
-        self.add_widget(tab3)
+        jwt_pentest_tab = TabbedPanelItem(text="JWT Pentest")
+        jwt_pentest_tab.add_widget(JwtPentestView(console_view))
+        self.add_widget(jwt_pentest_tab)
 
         self.set_def_tab(tab1)
 

@@ -4,9 +4,9 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.tabbedpanel import TabbedPanel, TabbedPanelItem
 
-from gui.console_view import ConsoleView
 from gui.credential_stuffing.credential_stuffing_view import CredentialStuffingView
 from gui.global_variables import default_tab_width
+from gui.utils.console_view import ConsoleView
 
 Window.size = (1600, 800)
 

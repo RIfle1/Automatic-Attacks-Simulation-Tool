@@ -2,8 +2,8 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 
-from gui.custom_layout import CustomHeightLayout
 from gui.global_variables import default_font_size, title_font_size
+from gui.utils.custom_layout import CustomHeightLayout
 
 
 class TextInputWidget(GridLayout):

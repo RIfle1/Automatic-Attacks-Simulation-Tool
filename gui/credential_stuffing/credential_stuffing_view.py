@@ -6,17 +6,17 @@ from kivy.uix.gridlayout import GridLayout
 
 from credential_stuffing.global_variables import headers_global, USERNAME_KEY, PASSWORD_KEY, LOGIN_SUCCESS_KEY, \
     url_global, credential_limit_global
-from credential_stuffing.main import get_credentials_from_api, credential_stuffing
-from gui.TextInputWidget import TextInputWidget
-from gui.console_view import ConsoleView
+from credential_stuffing.main import credential_stuffing
 from gui.credential_stuffing.credentials_view import CredentialsView
 from gui.credential_stuffing.process_manager import start_process, stop_process, is_stopped
-from gui.credential_stuffing.success_manager import add_finish, clear_finishes, get_finishes_length, \
+from gui.credential_stuffing.success_manager import get_finishes_length, \
     get_successful_credentials, get_failed_credentials, clear_all, get_failed_requests_length
 from gui.credential_stuffing.variables_view import VariablesView
-from gui.custom_layout import CustomHeightLayout
 from gui.global_variables import default_button_height
-from gui.keywords_view import KeywordsView
+from gui.utils.TextInputWidget import TextInputWidget
+from gui.utils.console_view import ConsoleView
+from gui.utils.custom_layout import CustomHeightLayout
+from gui.utils.keywords_view import KeywordsView
 
 
 class CredentialStuffingView(GridLayout):
@@ -31,7 +31,9 @@ class CredentialStuffingView(GridLayout):
         self.spacing = 10
 
         self.url_view = TextInputWidget(url_global, "Login URL", "Login URL Of The Website You Want To Attack")
-        self.credentials_limit_view = TextInputWidget(str(credential_limit_global), "Credentials Limit", "How Many Credentials To Fetch Per Keyword (From 5 to 100)", 'int')
+        self.credentials_limit_view = TextInputWidget(str(credential_limit_global), "Credentials Limit",
+                                                      "How Many Credentials To Fetch Per Keyword (From 5 to 100)",
+                                                      'int')
         self.keywords_view = KeywordsView()
         self.credentials_view = CredentialsView()
         self.variables_view = VariablesView()
@@ -88,18 +90,21 @@ def start_credential_stuffing_attack(self: CredentialStuffingView):
 
 
 def check_state(keywords, credential_limit, console_view: ConsoleView, report_view: ConsoleView):
-    while get_finishes_length() < ((len(keywords) - get_failed_requests_length()) * int(credential_limit)) and not is_stopped():
+    while get_finishes_length() < (
+            (len(keywords) - get_failed_requests_length()) * int(credential_limit)) and not is_stopped():
         print(get_finishes_length(), (len(keywords) - get_failed_requests_length()) * int(credential_limit))
         console_view.add_text_schedule(f"Waiting for response...")
         time.sleep(1)
 
-    if not is_stopped() and ((len(keywords) - get_failed_requests_length()) * int(credential_limit)) == get_finishes_length():
+    if not is_stopped() and (
+            (len(keywords) - get_failed_requests_length()) * int(credential_limit)) == get_finishes_length():
         console_view.add_text_schedule("--------------Credential Stuffing Attack Complete--------------")
     else:
         console_view.add_text_schedule("--------------Credential Stuffing Attack Stopped--------------")
 
     output_report_results(report_view)
     clear_all()
+
 
 def output_report_results(report_view: ConsoleView):
     report_results = f"--------------Credential Stuffing Attack Report START--------------\n"

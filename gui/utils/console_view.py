@@ -3,8 +3,8 @@ from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.textinput import TextInput
 
-from gui.custom_layout import CustomHeightLayout
 from gui.global_variables import default_font_size, default_button_height
+from gui.utils.custom_layout import CustomHeightLayout
 
 
 class ConsoleView(GridLayout):

@@ -3,8 +3,8 @@ from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 
 from credential_stuffing.main import keywords
-from gui.custom_layout import CustomHeightLayout, CustomDynamicLayout
 from gui.global_variables import default_font_size, title_font_size
+from gui.utils.custom_layout import CustomDynamicLayout, CustomHeightLayout
 
 
 def keywords_to_string(keywords_var):

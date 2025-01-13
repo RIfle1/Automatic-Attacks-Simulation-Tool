@@ -5,12 +5,12 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.widget import Widget
 
+from attacks.sql_injection.global_variables import target_url
 from attacks.sql_injection.main import sql_injection_test
-from gui.sql_injection.UrlView import UrlView
-from gui.sql_injection.console_view import ConsoleView
-from gui.sql_injection.custom_layout import CustomHeightLayout
 from gui.global_variables import default_button_height, default_padding_1
-from attacks.sql_injection.flask_server import run_server
+from gui.utils.console_view import ConsoleView
+from gui.utils.custom_layout import CustomHeightLayout
+from gui.utils.text_input_widget import TextInputWidget
 
 
 class SqlInjectionView(BoxLayout):
@@ -25,7 +25,7 @@ class SqlInjectionView(BoxLayout):
         self.server_process = None
 
         # Add URL View at the top
-        self.url_view = UrlView()
+        self.url_view = TextInputWidget(target_url, "Target URL", "URL of the website")
         self.add_widget(self.url_view)
 
         # Add a spacer to push buttons to the bottom

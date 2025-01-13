@@ -1,14 +1,16 @@
 import threading
+
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.widget import Widget
 
-from gui.dos_attack.UrlView import UrlView
-from gui.dos_attack.console_view import ConsoleView
-from gui.dos_attack.custom_layout import CustomHeightLayout
-from gui.dos_attack.stopped_manager import start_process, is_stopped, stop_process
+from attacks.dos_attack.global_variables import target_url
 from attacks.dos_attack.main import perform_dos
+from gui.dos_attack.stopped_manager import start_process, stop_process
 from gui.global_variables import default_button_height, default_padding_1
+from gui.utils.console_view import ConsoleView
+from gui.utils.custom_layout import CustomHeightLayout
+from gui.utils.text_input_widget import TextInputWidget
 
 
 class DoSAttackView(BoxLayout):
@@ -20,7 +22,7 @@ class DoSAttackView(BoxLayout):
         self.spacing = 10
 
         # Add URL view at the top
-        self.url_view = UrlView()
+        self.url_view = TextInputWidget(target_url, "Target URL", "URL of the website")
         self.add_widget(self.url_view)
 
         # Add a spacer to push buttons to the bottom

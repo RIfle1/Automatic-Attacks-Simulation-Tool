@@ -1,7 +1,7 @@
 import threading
 import requests
-from gui.dos_attack.console_view import ConsoleView
 from gui.dos_attack.stopped_manager import is_stopped
+from gui.utils.console_view import ConsoleView
 
 
 def perform_dos(target_url, console_view: ConsoleView):

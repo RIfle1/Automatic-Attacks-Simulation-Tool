@@ -5,10 +5,12 @@ from kivy.uix.tabbedpanel import TabbedPanel, TabbedPanelItem
 
 from gui.credential_stuffing.credential_stuffing_view import CredentialStuffingView
 from gui.csrf_grab_token.crsf_token_view import CSRFTokenView
+from gui.dos_attack.dos_attack_view import DoSAttackView
 from gui.global_variables import default_tab_width
 from gui.jwt.jwt_attack_view import JwtAttackView
 from gui.jwt.jwt_pentest_view import JwtPentestView
 from gui.least_privilege.least_privilege_view import LeastPrivilegeTokenView
+from gui.sql_injection.sql_injection_view import SqlInjectionView
 from gui.utils.console_view import ConsoleView
 
 Window.size = (1600, 800)
@@ -77,14 +79,15 @@ class TabsView(TabbedPanel):
 
         self.set_def_tab(credential_stuffing_tab)
 
-        # Tab 5: Denial of Service
-        tab4 = TabbedPanelItem(text="SQL")
-        tab4.add_widget(SqlInjectionView(console_view))
-        self.add_widget(tab4)
-        # Tab 4: Denial of Service
-        tab5 = TabbedPanelItem(text="DoS Attack")
-        tab5.add_widget(DoSAttackView(console_view))
-        self.add_widget(tab5)
+        # Tab 6: SQL Injection Tab
+        sql_injection_tab = TabbedPanelItem(text="SQL")
+        sql_injection_tab.add_widget(SqlInjectionView(console_view))
+        self.add_widget(sql_injection_tab)
+
+        # Tab 7: Denial of Service
+        dos_tab = TabbedPanelItem(text="DoS Attack")
+        dos_tab.add_widget(DoSAttackView(console_view))
+        self.add_widget(dos_tab)
 
 
 if __name__ == "__main__":

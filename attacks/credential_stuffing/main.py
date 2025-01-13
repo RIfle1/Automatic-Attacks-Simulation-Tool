@@ -63,7 +63,7 @@ def get_credentials_from_api(query, console_view: ConsoleView, limit=10):
             add_failed_request(query)
             console_view.add_text_schedule(not_found_msg)
     else:
-        error_msg = f"[ERROR] Error: {response.status_code} for {query} | {data["error"]}"
+        error_msg = f"[ERROR] Error: {response.status_code} for {query} | {data['error']}"
         add_failed_request(query)
         console_view.add_text_schedule(error_msg)
 

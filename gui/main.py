@@ -2,6 +2,7 @@ from kivy.app import App
 from kivy.core.window import Window
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.tabbedpanel import TabbedPanel, TabbedPanelItem
+from kivy.clock import Clock
 
 from gui.credential_stuffing.credential_stuffing_view import CredentialStuffingView
 from gui.csrf_grab_token.crsf_token_view import CSRFTokenView
@@ -12,18 +13,18 @@ from gui.jwt.jwt_pentest_view import JwtPentestView
 from gui.least_privilege.least_privilege_view import LeastPrivilegeTokenView
 from gui.sql_injection.sql_injection_view import SqlInjectionView
 from gui.utils.console_view import ConsoleView
-
-Window.size = (1600, 800)
-
+from gui.docker_trojan.docker_trojan_view import DockerTrojanView, app # DO NOT REMOVE app FROM IMPORT
 
 class Gui(App):
     def build(self):
+        Clock.schedule_once(self.set_window_size, 0)
         self.window = GridLayout()
         self.window.cols = 1
         self.window.add_widget(MainView())
-
         return self.window
 
+    def set_window_size(self, dt):
+        Window.size = (1600, 800)
 
 class MainView(GridLayout):
     def __init__(self, **kwargs):
@@ -37,14 +38,12 @@ class MainView(GridLayout):
         self.add_widget(console_view)
         self.add_widget(report_view)
 
-
 class ParametersView(GridLayout):
     def __init__(self, console_view: ConsoleView, report_view: ConsoleView, **kwargs):
         super(ParametersView, self).__init__(**kwargs)
         self.cols = 1
         self.rows = 2
         self.add_widget(TabsView(console_view, report_view))
-
 
 class TabsView(TabbedPanel):
     def __init__(self, console_view: ConsoleView, report_view: ConsoleView, **kwargs):
@@ -89,6 +88,10 @@ class TabsView(TabbedPanel):
         dos_tab.add_widget(DoSAttackView(console_view))
         self.add_widget(dos_tab)
 
+        # Tab 8: Docker Trojan
+        docker_trojan_tab = TabbedPanelItem(text="Docker Trojan")
+        docker_trojan_tab.add_widget(DockerTrojanView(console_view))
+        self.add_widget(docker_trojan_tab)
 
 if __name__ == "__main__":
     Gui().run()

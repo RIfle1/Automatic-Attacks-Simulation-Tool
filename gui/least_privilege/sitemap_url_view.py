@@ -8,7 +8,7 @@ from gui.utils.custom_layout import CustomHeightLayout
 
 
 class SiteMapUrlView(GridLayout):
-    def __init__(self, **kwargs):
+    def __init__(self,url, **kwargs):
         super(SiteMapUrlView, self).__init__(**kwargs)
         self.cols = 1
         self.rows = 2
@@ -24,7 +24,7 @@ class SiteMapUrlView(GridLayout):
 
         url_area_layout = CustomHeightLayout(height=30)
         self.url_area = TextInput(
-            text=url_global,
+            text=url,
             hint_text="SiteMap URL",
             multiline=False,
             font_size=default_font_size,

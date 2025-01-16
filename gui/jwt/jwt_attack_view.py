@@ -9,7 +9,7 @@ from kivy.uix.switch import Switch
 from kivy.uix.scrollview import ScrollView
 
 class JwtAttackView(GridLayout):
-    def __init__(self, console_view, **kwargs):
+    def __init__(self, console_view, report_view, **kwargs):
         super(JwtAttackView, self).__init__(**kwargs)
         self.cols = 1
         self.rows = 15
@@ -17,6 +17,7 @@ class JwtAttackView(GridLayout):
         self.spacing = 10
 
         self.console_view = console_view
+        self.report_view = report_view
         self.fields = {}  # Store fields with their layouts
 
         self.add_widget(Label(text="JWT Secret", size_hint=(1, None), height=30))
@@ -155,9 +156,6 @@ class JwtAttackView(GridLayout):
         }
         self.fields_layout.add_widget(layout)
 
-    # Remaining methods (add_custom_field, delete_field, on_switch_active, generate_jwt) remain unchanged
-
-
     def add_custom_field(self, _):
         """
         Add a new custom field with an editable name and value.
@@ -224,5 +222,7 @@ class JwtAttackView(GridLayout):
         try:
             token = jwt.encode(payload, secret, algorithm="HS256")
             self.console_view.add_text_schedule(f"Generated JWT: {token}")
+            self.report_view.add_text_schedule(f"Generated JWT: {token}")
         except Exception as e:
             self.console_view.add_text_schedule(f"Error: {e}")
+            self.report_view.add_text_schedule(f"Error: {e}")

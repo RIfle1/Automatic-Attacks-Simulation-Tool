@@ -15,8 +15,9 @@ from gui.utils.text_input_widget import TextInputWidget
 
 
 class LeastPrivilegeTokenView(BoxLayout):
-    def __init__(self, console_view: ConsoleView, **kwargs):
+    def __init__(self, console_view: ConsoleView,report_view: ConsoleView, **kwargs):
         self.console_view = console_view
+        self.report_view = report_view
         super(LeastPrivilegeTokenView, self).__init__(**kwargs)
         self.orientation = 'vertical'
         self.padding = 10
@@ -75,7 +76,8 @@ def start_csrf_grab(self: LeastPrivilegeTokenView):
 
     success = False
     while not is_stopped():
-        success = test_least_privilege(url, sitemap_url, self.console_view)
+        success,endpoints,weaknesses = test_least_privilege(url, sitemap_url, self.console_view)
+        report_results(self.report_view,endpoints,weaknesses)
         if success or is_stopped():
             break
 
@@ -85,3 +87,15 @@ def start_csrf_grab(self: LeastPrivilegeTokenView):
     else:
         self.console_view.add_text_schedule("Least Privilege attack stopped")
         self.console_view.add_text_schedule("")
+
+def report_results(report_view: ConsoleView, endpoints, weaknesses):
+    report_results = f"--------------Least Privilege attack Report START--------------\n"
+    report_results += "endpoints tested: \n"
+    for endpoint in endpoints:
+        report_results+= endpoint +"\n "
+    report_results+="\n endpoints vulnerable: \n"
+    for weakness in weaknesses:
+        report_results += weakness + "\n"
+    report_results = report_results + f"--------------Least Privilege attack Report END--------------\n"
+
+    report_view.add_text_schedule(report_results)

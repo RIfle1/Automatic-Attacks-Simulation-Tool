@@ -58,12 +58,12 @@ class TabsView(TabbedPanel):
 
         # Tab 2: CSRF Token
         crsf_token_grab_tab = TabbedPanelItem(text="CSRF Token Grab")
-        crsf_token_grab_tab.add_widget(CSRFTokenView(console_view))
+        crsf_token_grab_tab.add_widget(CSRFTokenView(console_view,report_view))
         self.add_widget(crsf_token_grab_tab)
 
         # Tab 3: Least Privilege
         least_privilege_tab = TabbedPanelItem(text="Least Privilege")
-        least_privilege_tab.add_widget(LeastPrivilegeTokenView(console_view))
+        least_privilege_tab.add_widget(LeastPrivilegeTokenView(console_view,report_view))
         self.add_widget(least_privilege_tab)
 
         # Tab 4: JWT Attack

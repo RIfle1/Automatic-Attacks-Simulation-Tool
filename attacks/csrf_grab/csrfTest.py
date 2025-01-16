@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from nbclient.exceptions import stream_output_msg
+
 
 
 def scan_for_post_endpoints(html):
@@ -12,9 +12,10 @@ def scan_for_post_endpoints(html):
     return post_endpoints
 
 
-def test_csrf_protection(html,console_view):
+def test_csrf_protection(html,console_view, report_view):
     with requests.Session() as session:
         post_endpoints = scan_for_post_endpoints(html)
+        result=" "
 
 
         for endpoint in post_endpoints:
@@ -26,23 +27,27 @@ def test_csrf_protection(html,console_view):
 
             if csrf_token is None or form_action is None:
                 console_view.add_text_schedule("CSRF token or form action is missing.")
-                break # CSRF token or form action missing
+
 
             # Attempt to submit the form without CSRF token
             response = session.post(f'{html}{endpoint}', data={'name': 'Test'})
             if 'The CSRF token is missing.' not in response.text:
                 console_view.add_text_schedule(f"CSRF token missing protection failed at {endpoint}")
-                break  # CSRF protection failed
+                console_view.add_text_schedule("")
 
-            # Submit the form with the CSRF token
-            console_view.add_text_schedule(f"Extracted CSRF token: {csrf_token}")
-            response = session.post(f'{html}{form_action}', data={'name': 'Test', 'csrf_token': csrf_token})
-            if 'Form submitted successfully' not in response.text:
-                console_view.add_text_schedule(f"Form submission failed at {endpoint}")
-                break  # Form submission failed
+            else:
+                # Submit the form with the CSRF token
+                console_view.add_text_schedule(f"Extracted CSRF token: {csrf_token}")
+                result=f"Extracted CSRF token: {csrf_token}"
+                response = session.post(f'{html}{form_action}', data={'name': 'Test', 'csrf_token': csrf_token})
+                if 'Form submitted successfully' not in response.text:
+                    console_view.add_text_schedule(f"Form submission failed at {endpoint}")
+
+        if result==" ":
+            result="no CSRF token found"
 
         # If all checks pass
-        return True
+        return True,post_endpoints,result
 
 
 def extract_csrf_token_and_action(html,console_view):

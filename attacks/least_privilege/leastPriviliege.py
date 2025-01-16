@@ -100,17 +100,16 @@ def test_post_endpoint(base_url, endpoint, seen_endpoints, successful_endpoints,
     except requests.exceptions.RequestException as e:
         console_view.add_text_schedule(f"Error testing endpoint {full_url}: {e}")
 
-def print_post_endpoints(urls, base_url,console_view):
+def print_post_endpoints(urls, base_url,console_view,endpoints,seen_endpoints,successful_endpoints):
     """
     Print and test POST endpoints for a list of URLs.
     """
-    seen_endpoints = set()  # Keep track of endpoints returning 400 or 429 errors
-    successful_endpoints = set()  # Use a set to collect successful POST endpoints (avoids duplicates)
 
     for url in urls[:3]:  # Limit to the first 10 URLs
         post_endpoints = get_post_endpoints(url,console_view)
         console_view.add_text_schedule(f"POST endpoints for {url}:")
         for endpoint in post_endpoints:
+            endpoints.add(endpoint)
             console_view.add_text_schedule(f"  {endpoint}")
             test_post_endpoint(base_url, endpoint, seen_endpoints, successful_endpoints,console_view)
         console_view.add_text_schedule("")
@@ -130,6 +129,10 @@ def print_post_endpoints(urls, base_url,console_view):
 #    sitemap_url = 'https://lab401.com/sitemap.xml'
 def test_least_privilege(url,sitemap_url,console_view):
 
+    endpoints=set()
+    seen_endpoints = set()  # Keep track of endpoints returning 400 or 429 errors
+    successful_endpoints = set()  # Use a set to collect successful POST endpoints (avoids duplicates)
+
     # Try to get URLs from the sitemap
     urls = get_urls_from_sitemap(sitemap_url,console_view)
     if not urls:
@@ -137,5 +140,5 @@ def test_least_privilege(url,sitemap_url,console_view):
         console_view.add_text_schedule(f"No sitemap found or no URLs extracted. Testing the base URL: {url}")
         urls = [url]
 
-    return print_post_endpoints(urls, url,console_view)
+    return print_post_endpoints(urls, url,console_view,endpoints,seen_endpoints,successful_endpoints),endpoints,successful_endpoints
 

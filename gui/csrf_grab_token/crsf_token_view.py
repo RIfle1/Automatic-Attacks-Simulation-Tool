@@ -14,8 +14,9 @@ from gui.utils.text_input_widget import TextInputWidget
 
 
 class CSRFTokenView(BoxLayout):
-    def __init__(self, console_view: ConsoleView, **kwargs):
+    def __init__(self, console_view: ConsoleView,report_view: ConsoleView, **kwargs):
         self.console_view = console_view
+        self.report_view = report_view
         super(CSRFTokenView, self).__init__(**kwargs)
         self.orientation = 'vertical'
         self.padding = 10
@@ -34,7 +35,7 @@ class CSRFTokenView(BoxLayout):
         # First button in CustomHeightLayout
         start_button_layout = CustomHeightLayout(height=default_button_height)
         self.start_button = Button(text="Grab csrf token")
-        self.start_button.bind(on_press=self.start_credential_stuffing_attack_thread)
+        self.start_button.bind(on_press=self.start_csrf_attack_thread)
         start_button_layout.add_widget(self.start_button)
         button_layout.add_widget(start_button_layout)
 
@@ -56,7 +57,7 @@ class CSRFTokenView(BoxLayout):
         """Fetch the URL from UrlView."""
         return self.url_view.get_text()
 
-    def start_credential_stuffing_attack_thread(self, instance):
+    def start_csrf_attack_thread(self, instance):
         start_process()
         threading.Thread(target=start_csrf_grab, args=(self,)).start()
 
@@ -68,11 +69,13 @@ def start_csrf_grab(self: CSRFTokenView):
     url = self.url_view.get_text()
 
     self.console_view.add_text_schedule(f"Starting CSRF Token Grabbing Attack on {url}")
+    self.console_view.add_text_schedule("")
 
     success = False
     while not is_stopped():
 
-        success = test_csrf_protection(url, console_view=self.console_view)
+        success,endpoints,result = test_csrf_protection(url, console_view=self.console_view,report_view=self.report_view)
+        report_results(self.report_view,endpoints,result)
 
         if success or is_stopped():
             break
@@ -83,3 +86,14 @@ def start_csrf_grab(self: CSRFTokenView):
     else:
         self.console_view.add_text_schedule("Csrf token grab attack stopped")
         self.console_view.add_text_schedule("")
+
+
+def report_results(report_view: ConsoleView, endpoints, result):
+    report_results = f"--------------CSRF Token grab Report START--------------\n"
+    report_results += "endpoints tested: \n"
+    for endpoint in endpoints:
+        report_results+= endpoint +"\n"
+    report_results+=result+" \n"
+    report_results = report_results + f"--------------CSRF Token grab Report END--------------\n"
+
+    report_view.add_text_schedule(report_results)

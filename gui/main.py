@@ -68,12 +68,12 @@ class TabsView(TabbedPanel):
 
         # Tab 4: JWT Attack
         jwt_attack_tab = TabbedPanelItem(text="JWT Attack")
-        jwt_attack_tab.add_widget(JwtAttackView(console_view))
+        jwt_attack_tab.add_widget(JwtAttackView(console_view, report_view))
         self.add_widget(jwt_attack_tab)
 
         # Tab 5: JWT Pentest
         jwt_pentest_tab = TabbedPanelItem(text="JWT Pentest")
-        jwt_pentest_tab.add_widget(JwtPentestView(console_view))
+        jwt_pentest_tab.add_widget(JwtPentestView(console_view, report_view))
         self.add_widget(jwt_pentest_tab)
 
         self.set_def_tab(credential_stuffing_tab)
@@ -90,8 +90,10 @@ class TabsView(TabbedPanel):
 
         # Tab 8: Docker Trojan
         docker_trojan_tab = TabbedPanelItem(text="Docker Trojan")
-        docker_trojan_tab.add_widget(DockerTrojanView(console_view))
+        docker_trojan_tab.add_widget(DockerTrojanView(console_view, report_view))
         self.add_widget(docker_trojan_tab)
+
+
 
 if __name__ == "__main__":
     Gui().run()

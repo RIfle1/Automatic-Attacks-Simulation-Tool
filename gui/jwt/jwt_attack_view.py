@@ -8,8 +8,11 @@ from kivy.uix.checkbox import CheckBox
 from kivy.uix.switch import Switch
 from kivy.uix.scrollview import ScrollView
 
+from gui.global_variables import default_font_size, title_font_size
+
+
 class JwtAttackView(GridLayout):
-    def __init__(self, console_view, **kwargs):
+    def __init__(self, console_view, report_view, **kwargs):
         super(JwtAttackView, self).__init__(**kwargs)
         self.cols = 1
         self.rows = 15
@@ -17,9 +20,10 @@ class JwtAttackView(GridLayout):
         self.spacing = 10
 
         self.console_view = console_view
+        self.report_view = report_view
         self.fields = {}  # Store fields with their layouts
 
-        self.add_widget(Label(text="JWT Secret", size_hint=(1, None), height=30))
+        self.add_widget(Label(text="JWT Secret", size_hint=(1, None), height=30, font_size=title_font_size))
 
         # Set default secret
         self.secret_input = TextInput(
@@ -27,11 +31,12 @@ class JwtAttackView(GridLayout):
             text="AxNjIsInN1YiI6ImxkZWxhdHVsbGF5ZUBqdW5pb3Jpc2VwLmNvbSIsIn",
             multiline=False,
             size_hint=(1, None),
-            height=30
+            height=30,
+            font_size=default_font_size
         )
         self.add_widget(self.secret_input)
 
-        self.add_widget(Label(text="Build Payload", size_hint=(1, None), height=30))
+        self.add_widget(Label(text="Build Payload", size_hint=(1, None), height=30, font_size=title_font_size))
 
         self.build_switch = Switch(active=True, size_hint=(1, None), height=30)
         self.build_switch.bind(active=self.on_switch_active)
@@ -53,7 +58,7 @@ class JwtAttackView(GridLayout):
         self.scroll_view.add_widget(self.fields_layout)
         self.add_widget(self.scroll_view)
 
-        self.add_field_button = Button(text="Add Custom Field", size_hint=(1, None), height=30)
+        self.add_field_button = Button(text="Add Custom Field", size_hint=(1, None), height=30, font_size=default_font_size)
         self.add_field_button.bind(on_press=self.add_custom_field)
         self.add_widget(self.add_field_button)
 
@@ -61,11 +66,12 @@ class JwtAttackView(GridLayout):
             hint_text="Enter Payload as JSON",
             multiline=True,
             size_hint=(1, None),
-            height=100
+            height=100,
+            font_size=default_font_size
         )
         self.add_widget(self.payload_input)
 
-        self.generate_button = Button(text="Generate JWT", size_hint=(1, None), height=30)
+        self.generate_button = Button(text="Generate JWT", size_hint=(1, None), height=30, font_size=default_font_size)
         self.generate_button.bind(on_press=self.generate_jwt)
         self.add_widget(self.generate_button)
 
@@ -97,7 +103,8 @@ class JwtAttackView(GridLayout):
             text=default_value,
             multiline=False,
             size_hint=(0.6, None),
-            height=30
+            height=30,
+            font_size=default_font_size
         )
 
         layout.add_widget(checkbox)
@@ -124,7 +131,8 @@ class JwtAttackView(GridLayout):
             hint_text="Field Name" if is_custom else "",
             multiline=False,
             size_hint=(0.2, None),
-            height=30
+            height=30,
+            font_size=default_font_size
         )
         name_input.disabled = not is_custom
 
@@ -133,7 +141,8 @@ class JwtAttackView(GridLayout):
             text=default_value,
             multiline=False,
             size_hint=(0.4, None),
-            height=30
+            height=30,
+            font_size=default_font_size
         )
         list_checkbox = CheckBox(active=is_list, size_hint=(None, None), size=(30, 30))  # List toggle
 
@@ -154,9 +163,6 @@ class JwtAttackView(GridLayout):
             "list_checkbox": list_checkbox
         }
         self.fields_layout.add_widget(layout)
-
-    # Remaining methods (add_custom_field, delete_field, on_switch_active, generate_jwt) remain unchanged
-
 
     def add_custom_field(self, _):
         """
@@ -224,5 +230,7 @@ class JwtAttackView(GridLayout):
         try:
             token = jwt.encode(payload, secret, algorithm="HS256")
             self.console_view.add_text_schedule(f"Generated JWT: {token}")
+            self.report_view.add_text_schedule(f"Generated JWT: {token}")
         except Exception as e:
             self.console_view.add_text_schedule(f"Error: {e}")
+            self.report_view.add_text_schedule(f"Error: {e}")

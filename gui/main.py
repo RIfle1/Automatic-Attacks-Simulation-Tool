@@ -90,7 +90,7 @@ class TabsView(TabbedPanel):
 
         # Tab 8: Docker Trojan
         docker_trojan_tab = TabbedPanelItem(text="Docker Trojan")
-        docker_trojan_tab.add_widget(DockerTrojanView(console_view))
+        docker_trojan_tab.add_widget(DockerTrojanView(console_view, report_view))
         self.add_widget(docker_trojan_tab)
 
 

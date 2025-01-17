@@ -69,18 +69,18 @@ def start_credential_stuffing_attack(self: CredentialStuffingView):
     credential_limit = self.credentials_limit_view.get_text()
     keywords = self.keywords_view.get_keywords()
 
-    username_variable = self.variables_view.get_variable_values(USERNAME_KEY)
-    password_variable = self.variables_view.get_variable_values(PASSWORD_KEY)
-    login_success_variable = self.variables_view.get_variable_values(LOGIN_SUCCESS_KEY)
+    username_variable_local = self.variables_view.get_variable_values(USERNAME_KEY)
+    password_variable_local = self.variables_view.get_variable_values(PASSWORD_KEY)
+    login_success_variable_local = self.variables_view.get_variable_values(LOGIN_SUCCESS_KEY)
 
     if len(self.credentials_view.get_credentials_list()) > 0:
-        credential_stuffing(username_variable, password_variable, login_success_variable, url,
-                            headers_global, self.console_view, "None", self.credentials_view.get_credentials_list())
+        credential_stuffing(username_variable_local, password_variable_local, login_success_variable_local, url,
+                            headers_global, self.console_view, "None", credential_limit, self.credentials_view.get_credentials_list())
 
     if len(keywords) > 0:
         for keyword in keywords:
             threading.Thread(target=credential_stuffing,
-                             args=(username_variable, password_variable, login_success_variable, url,
+                             args=(username_variable_local, password_variable_local, login_success_variable_local, url,
                                    headers_global, self.console_view, keyword, credential_limit)).start()
             if is_stopped():
                 break

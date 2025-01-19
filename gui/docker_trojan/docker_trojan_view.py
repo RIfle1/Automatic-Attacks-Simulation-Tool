@@ -14,12 +14,13 @@ from gui.utils.console_view import ConsoleView
 app = FastAPI()
 
 class UvicornServer:
-    def __init__(self, console_view: ConsoleView):
+    def __init__(self, console_view: ConsoleView, report_view: ConsoleView):
         self.config = Config(app=app, host="0.0.0.0", port=5001, workers=1)
         self.server = None
         self.loop = None
         self.thread = None
         self.console_view = console_view
+        self.report_view = report_view
 
     def start(self):
         if not self.thread or not self.thread.is_alive():
@@ -37,10 +38,11 @@ class UvicornServer:
             self.loop.call_soon_threadsafe(self.server.handle_exit, None, None)
 
 class DockerTrojanView(GridLayout):
-    def __init__(self, console_view: ConsoleView, **kwargs):
+    def __init__(self, console_view: ConsoleView, report_view: ConsoleView, **kwargs):
         super(DockerTrojanView, self).__init__(**kwargs)
         self.cols = 1
         self.console_view = console_view
+        self.report_view = report_view
 
         self.clear_log_file()
 
@@ -58,7 +60,7 @@ class DockerTrojanView(GridLayout):
         self.add_widget(self.log_button)
 
         global uvicorn_server
-        uvicorn_server = UvicornServer(console_view)
+        uvicorn_server = UvicornServer(console_view, report_view)
 
     def clear_log_file(self):
         log_file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../Resources/collected_data.log'))
@@ -100,7 +102,15 @@ async def collect_data(request: Request):
         log_file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../Resources/collected_data.log'))
         with open(log_file_path, "a") as file:
             file.write(f"{timestamp} :\n {json.dumps(data, indent=4)}\n")
+
+        # Extract environment variables and container name from Docker inspect data
+        env_vars = data.get("Config", {}).get("Env", [])
+        env_vars_str = "\n".join(env_vars)
+        container_name = data.get("Name", "").strip("/")
+
         uvicorn_server.console_view.add_text_schedule(f"Data received: {json.dumps(data, indent=4)}")
+        uvicorn_server.report_view.add_text_schedule(f"Container Name: {container_name}\nEnvironment Variables:\n{env_vars_str}")
+
         return {"status": "success", "message": "Data received and logged."}
     except Exception as e:
         return {"status": "error", "message": str(e)}

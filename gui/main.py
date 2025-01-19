@@ -80,7 +80,7 @@ class TabsView(TabbedPanel):
 
         # Tab 6: SQL Injection Tab
         sql_injection_tab = TabbedPanelItem(text="SQL")
-        sql_injection_tab.add_widget(SqlInjectionView(console_view))
+        sql_injection_tab.add_widget(SqlInjectionView(console_view, report_view))
         self.add_widget(sql_injection_tab)
 
         # Tab 7: Denial of Service

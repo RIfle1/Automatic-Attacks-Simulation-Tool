@@ -60,7 +60,7 @@ def login():
         conn.close()
 
         if user:
-            return f"<h2>Welcome {user[1]}!</h2>"  # Use fetched username from DB
+            return f"<h2>Welcome {user[1]}!</h2>"
         else:
             return "<h2>Invalid credentials</h2>", 401
     except Exception as e:

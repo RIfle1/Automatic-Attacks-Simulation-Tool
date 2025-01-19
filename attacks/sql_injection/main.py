@@ -14,6 +14,6 @@ def sql_injection_test(target_url, parameters, payloads, console_view):
             # Log the response and status
             console_view.add_text_schedule(f"[INFO] Payload: {payload}")
             console_view.add_text_schedule(f"[INFO] Response Status Code: {response.status_code}")
-            console_view.add_text_schedule(f"[INFO] Response Text: {response.text[:200]}")  # Limit response text
+            console_view.add_text_schedule(f"[INFO] Response Text: {response.text[:200]}")
         except Exception as e:
             console_view.add_text_schedule(f"[ERROR] Failed to test payload '{payload}': {e}")

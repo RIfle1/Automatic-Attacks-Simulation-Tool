@@ -23,7 +23,7 @@ class CSRFTokenView(BoxLayout):
         self.spacing = 10
 
         # Add URL view at the top
-        self.url_view = TextInputWidget(url_global, "URL", "URL of the website you want")
+        self.url_view = TextInputWidget('https://csrf.ldelatullaye.fr/', "URL", "URL of the website you want")
         self.add_widget(self.url_view)
 
         # Add a spacer to push buttons to the bottom

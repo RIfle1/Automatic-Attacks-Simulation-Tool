@@ -80,12 +80,12 @@ class TabsView(TabbedPanel):
 
         # Tab 6: SQL Injection Tab
         sql_injection_tab = TabbedPanelItem(text="SQL")
-        sql_injection_tab.add_widget(SqlInjectionView(console_view))
+        sql_injection_tab.add_widget(SqlInjectionView(console_view, report_view))
         self.add_widget(sql_injection_tab)
 
         # Tab 7: Denial of Service
         dos_tab = TabbedPanelItem(text="DoS Attack")
-        dos_tab.add_widget(DoSAttackView(console_view))
+        dos_tab.add_widget(DoSAttackView(console_view, report_view))
         self.add_widget(dos_tab)
 
         # Tab 8: Docker Trojan

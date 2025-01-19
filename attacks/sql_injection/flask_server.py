@@ -7,7 +7,6 @@ app = Flask(__name__)
 DATABASE = 'test.db'
 
 def init_db():
-    """Initialize the database with a users table."""
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
     # Create a table for users
@@ -26,7 +25,6 @@ def init_db():
 
 @app.route('/')
 def home():
-    """Render a vulnerable login page."""
     login_form = '''
     <h1>Login Page</h1>
     <form action="/login" method="post">
@@ -42,9 +40,6 @@ def home():
 @app.route('/login', methods=['POST'])
 
 def login():
-    """
-    Vulnerable login endpoint with SQL injection vulnerability.
-    """
     username = request.form.get('username', '')
     password = request.form.get('password', '')
 
@@ -60,7 +55,7 @@ def login():
         conn.close()
 
         if user:
-            return f"<h2>Welcome {user[1]}!</h2>"  # Use fetched username from DB
+            return f"<h2>Welcome {user[1]}!</h2>"
         else:
             return "<h2>Invalid credentials</h2>", 401
     except Exception as e:
@@ -69,4 +64,4 @@ def login():
 
 if __name__ == '__main__':
     init_db()  # Initialize the database
-    app.run(port=8080, debug=True)
+    app.run(port=8080, debug=True, threaded=True)

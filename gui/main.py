@@ -69,29 +69,29 @@ class TabsView(TabbedPanel):
 
         # Tab 4: JWT Attack
         jwt_attack_tab = TabbedPanelItem(text="JWT Attack")
-        jwt_attack_tab.add_widget(JwtAttackView(console_view))
+        jwt_attack_tab.add_widget(JwtAttackView(console_view, report_view))
         self.add_widget(jwt_attack_tab)
 
         # Tab 5: JWT Pentest
         jwt_pentest_tab = TabbedPanelItem(text="JWT Pentest")
-        jwt_pentest_tab.add_widget(JwtPentestView(console_view))
+        jwt_pentest_tab.add_widget(JwtPentestView(console_view, report_view))
         self.add_widget(jwt_pentest_tab)
 
         self.set_def_tab(credential_stuffing_tab)
 
         # Tab 6: SQL Injection Tab
         sql_injection_tab = TabbedPanelItem(text="SQL")
-        sql_injection_tab.add_widget(SqlInjectionView(console_view))
+        sql_injection_tab.add_widget(SqlInjectionView(console_view, report_view))
         self.add_widget(sql_injection_tab)
 
         # Tab 7: Denial of Service
         dos_tab = TabbedPanelItem(text="DoS Attack")
-        dos_tab.add_widget(DoSAttackView(console_view))
+        dos_tab.add_widget(DoSAttackView(console_view, report_view))
         self.add_widget(dos_tab)
 
         # Tab 8: Docker Trojan
         docker_trojan_tab = TabbedPanelItem(text="Docker Trojan")
-        docker_trojan_tab.add_widget(DockerTrojanView(console_view))
+        docker_trojan_tab.add_widget(DockerTrojanView(console_view, report_view))
         self.add_widget(docker_trojan_tab)
 
         # Tab 9: CORS Exploitation

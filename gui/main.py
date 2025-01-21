@@ -13,6 +13,7 @@ from gui.jwt.jwt_pentest_view import JwtPentestView
 from gui.least_privilege.least_privilege_view import LeastPrivilegeTokenView
 from gui.sql_injection.sql_injection_view import SqlInjectionView
 from gui.utils.console_view import ConsoleView
+from gui.cors_exploitation.cors_exploitation_view import CORSExploitationView
 from gui.docker_trojan.docker_trojan_view import DockerTrojanView, app # DO NOT REMOVE app FROM IMPORT
 
 class Gui(App):
@@ -93,7 +94,10 @@ class TabsView(TabbedPanel):
         docker_trojan_tab.add_widget(DockerTrojanView(console_view, report_view))
         self.add_widget(docker_trojan_tab)
 
-
+        # Tab 9: CORS Exploitation
+        cors_exploitation_tab = TabbedPanelItem(text="CORS Exploitation")
+        cors_exploitation_tab.add_widget(CORSExploitationView(console_view,report_view))
+        self.add_widget(cors_exploitation_tab)
 
 if __name__ == "__main__":
     Gui().run()

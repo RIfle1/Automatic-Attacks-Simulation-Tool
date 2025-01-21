@@ -66,7 +66,7 @@ class SqlInjectionView(BoxLayout):
 
         # Add URL Input Field
         self.url_view = TextInputWidget(
-            "http://127.0.0.1:8080/login", "Target URL", "Enter the Target URL"
+            "http://127.0.0.1:9000/login", "Target URL", "Enter the Target URL"
         )
         self.add_widget(self.url_view)
 

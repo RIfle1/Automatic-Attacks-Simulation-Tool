@@ -64,4 +64,4 @@ def login():
 
 if __name__ == '__main__':
     init_db()  # Initialize the database
-    app.run(port=8080, debug=True, threaded=True)
+    app.run(port=9000, debug=True, threaded=True)

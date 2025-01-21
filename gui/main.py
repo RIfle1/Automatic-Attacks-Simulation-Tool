@@ -4,6 +4,9 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.tabbedpanel import TabbedPanel, TabbedPanelItem
 from kivy.clock import Clock
 
+import sys
+sys.path.append('/Users/max/Desktop/Cours/Sécu Logicielle/Automatic-Attacks-Simulation-Tool') #Config problem on my mac, not necessary to merge this, just easier for me
+
 from gui.credential_stuffing.credential_stuffing_view import CredentialStuffingView
 from gui.csrf_grab_token.crsf_token_view import CSRFTokenView
 from gui.dos_attack.dos_attack_view import DoSAttackView
